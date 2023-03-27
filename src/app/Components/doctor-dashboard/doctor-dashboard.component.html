@@ -1,0 +1,166 @@
+<div>
+    <div>
+        <nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Doctor Dashboard</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" data-bs-toggle="modal"
+                            data-bs-target="#AddWorkingDayModal" style="cursor: pointer;">Add
+                                Working Day</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <form [formGroup]="GetAppointmentForm" class="col-3 p-3">
+        <label>Get Appointment by dates</label>
+        <div class="form-group">
+            <input class="form-control" type="date" formControlName="dateFrom" placeholder="From">
+            <div class="d-flex text-danger"
+                *ngIf="getDateFrom().invalid && getDateFrom().dirty || getDateFrom().touched">
+                <small *ngIf="getDateFrom().errors?.['required']">
+                    Date from is required
+                </small>
+
+            </div>
+
+        </div>
+        <div class="form-group pt-2">
+            <input class="form-control" type="date" formControlName="dateTo" placeholder="To">
+
+            <div class="d-flex text-danger" *ngIf="getDateTo().invalid && getDateTo().dirty || getDateTo().touched">
+                <small *ngIf="getDateTo().errors?.['required']">
+                    Date to is required
+                </small>
+
+            </div>
+
+        </div>
+        <div class="pt-2">
+            <button type="submit" (click)="GetAppointment()" class="btn btn-orange"
+                [disabled]="!GetAppointmentForm.valid">Get Appointment</button>
+        </div>
+    </form>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Patient Name</th>
+                    <th scope="col">Patient Address</th>
+                    <th scope="col">Patient Age</th>
+                    <th scope="col">Patient BirthDate</th>
+                    <th scope="col">date</th>
+                    <th scope="col">time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let appoint of _AppointmentList">
+                    <th scope="row">{{appoint.id}}</th>
+                    <td>{{appoint.patientName}}</td>
+                    <td>{{appoint.patientAddress}}</td>
+                    <td>{{appoint.patientAge}}</td>
+                    <td>{{appoint.patientBirthDate |date}}</td>
+                    <td>{{appoint.date | date}}</td>
+                    <td>{{appoint.time}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+
+
+<!-- Modal -->
+
+<div class="modal fade" id="AddWorkingDayModal" tabindex="-1" aria-labelledby="AddWorkingDayModal" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content p-md-2">
+
+            <div class="modal-body">
+                <form [formGroup]="WorkingDayForm">
+                    <div>
+                        <label>choose date</label>
+                        <div class="form-group">
+                            <input class="form-control" type="date" formControlName="date" placeholder="date">
+                            <div style="display: flex;flex-direction: column;"
+                                *ngIf="getDate().invalid && getDate().touched || getDate().dirty">
+                                <small *ngIf="getDate().errors?.['required']" class="text-danger">
+                                    Date is required
+                                </small>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <label>Select Time From</label>
+                        <div class="form-group">
+                            <select class="form-select required form-control" formControlName="from"
+                                 aria-label="Default select example">
+                                <option value="" disabled selected>From</option>
+                                <option *ngFor="let hour of _hourList" [ngValue]="hour">
+                                    {{hour}}
+                                </option>
+                            </select>
+                            <div class="d-flex text-danger"
+                                *ngIf="getFrom().invalid && getFrom().dirty || getFrom().touched">
+                                <small *ngIf="getFrom().errors?.['required']">
+                                    From time is required
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <label>Select Time To</label>
+                        <div class="form-group">
+                            <select class="form-select required form-control" formControlName="to"
+                                 aria-label="Default select example">
+                                <option value="" disabled selected>To</option>
+                                <option *ngFor="let hour of _hourList" [ngValue]="hour">
+                                    {{hour}}
+                                </option>
+                            </select>
+                            <div class="d-flex text-danger" *ngIf="getTo().invalid && getTo().dirty || getTo().touched">
+                                <small *ngIf="getTo().errors?.['required']">
+                                    To time is required
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group d-flex justify-content-end mt-3">
+                        <!-- <button mat-raised-button class="btn btn-orange btnSize loadBtn" [class.spinner]="Createloading"
+                            [disabled]="!WorkingDayForm.valid || Createloading" (click)="CreateModel()">Next</button> -->
+                    
+                            <button class="btn btn-orange" [disabled]="!WorkingDayForm.valid" (click)="AddWorkingDay()">Add Day</button>
+
+                        </div>
+                    <div class="modal-footer">
+                        <button type="button" style="display: none;" #CloseBtn class="btn btn-secondary"
+                            data-bs-dismiss="modal"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>

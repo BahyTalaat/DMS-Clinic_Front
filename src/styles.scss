@@ -1,0 +1,22 @@
+/* You can add global styles to this file, and also import other style files */
+.btn-orange {
+    color: #000!important;
+    border-color: unset;
+    border-radius: 4px;
+    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+    background: linear-gradient(256deg, #ffa41f 0%, #ff7030 99%, #ffa41f 100%);
+    font-weight: 500;
+    transition: 1s;
+  
+    &:focus {
+      box-shadow: none
+    }
+  
+    &:hover {
+      background: linear-gradient(256deg, #ffa41f 0%, #ff7030 0%, #ffa41f 100%);
+    }
+  }
+  .btn {
+    // height: 40px;
+    padding: .2rem .75rem!important;
+  }
